@@ -244,6 +244,17 @@
       border-color: rgba(200,245,90,0.4);
       box-shadow: 0 0 0 3px rgba(200,245,90,0.07);
     }
+
+    .input-error {
+      border-color: #f55a8a !important;
+      box-shadow: 0 0 0 2px rgba(245, 90, 138, 0.15);
+    }
+
+    .error-text {
+      color: #f55a8a;
+      font-size: 12px;
+      margin-top: 6px;
+    }
     select option { background: var(--surface2); }
     textarea { resize: vertical; min-height: 90px; }
 
@@ -773,18 +784,111 @@
   }, { threshold: 0.1 });
   document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
+  function showError(element, message) {
+    element.classList.add('input-error');
+
+    let error = element.parentElement.querySelector('.error-text');
+    if (!error) {
+      error = document.createElement('div');
+      error.className = 'error-text';
+      element.parentElement.appendChild(error);
+    }
+    error.textContent = message;
+
+    element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  function clearErrors() {
+    document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
+    document.querySelectorAll('.error-text').forEach(el => el.remove());
+  }
+
   // ── FORM SUBMISSION ──
   async function submitForm() {
     const btn = document.getElementById('submitBtn');
     const name = document.getElementById('name').value.trim();
     const email = document.getElementById('email').value.trim();
 
-    if (!name || !email) {
-      alert('Please enter your name and email to complete the survey.');
+    clearErrors();
+
+    // Q1 - Name
+   if (!name) {
+      showError(document.getElementById('name'), 'Name is required');
+      return;
+    }
+
+    // Q2 - Email
+    if (!email) {
+      showError(document.getElementById('email'), 'Email is required');
       return;
     }
     if (!email.includes('@') || !email.includes('.')) {
-      alert('Please enter a valid email address.');
+      showError(document.getElementById('email'), 'Enter a valid email');
+      return;
+    }
+
+    // Q3 - Role
+    const role = document.querySelector('input[name="role"]:checked');
+    if (!role) {
+      showError(document.querySelector('.radio-group'), 'Please select a role');
+      return;
+    }
+
+    // Q4 - City
+    const city = document.getElementById('city');
+    if (!city.value.trim()) {
+      showError(city, 'City is required');
+      return;
+    }
+
+    // Q5 - Tools
+    if (document.querySelectorAll('input[name="tools"]:checked').length === 0) {
+      showError(document.querySelector('input[name="tools"]').closest('.form-group'), 'Select at least one tool');
+      return;
+    }
+
+    // Q6 - Switch Frequency
+    const switchFreq = document.getElementById('switchFreq');
+    if (!switchFreq.value) {
+      showError(switchFreq, 'Please select an option');
+      return;
+    }
+
+    // Q7 - Spend
+    const spend = document.getElementById('spend');
+    if (!spend.value) {
+      showError(spend, 'Please select an option');
+      return;
+    }
+
+    // Q8 - Pain points
+    if (document.querySelectorAll('input[name="pains"]:checked').length === 0) {
+      showError(document.querySelector('input[name="pains"]').closest('.form-group'), 'Select at least one pain point');
+      return;
+    }
+
+    // Q11 - Features
+    if (document.querySelectorAll('input[name="features"]:checked').length === 0) {
+      showError(document.querySelector('input[name="features"]').closest('.form-group'), 'Select at least one feature');
+      return;
+    }
+
+    // Q12 - Use case
+    if (document.querySelectorAll('input[name="usecase"]:checked').length === 0) {
+      showError(document.querySelector('input[name="usecase"]').closest('.form-group'), 'Select at least one use case');
+      return;
+    }
+
+    // Q13 - Pricing
+    if (!document.querySelector('input[name="pricing"]:checked')) {
+      showError(document.querySelector('.radio-group:last-of-type'), 'Please select one option');
+      return;
+    }
+
+    // Q15 - Missing feature
+    const missing = document.getElementById('missing');
+    if (!missing.value.trim()) {
+      showError(missing, 'This field is required');
       return;
     }
 
