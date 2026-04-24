@@ -255,6 +255,7 @@
       font-size: 12px;
       margin-top: 6px;
     }
+    .form-status { min-height: 18px; text-align: center; color: var(--muted); font-size: 13px; margin-top: 12px; }
     select option { background: var(--surface2); }
     textarea { resize: vertical; min-height: 90px; }
 
@@ -310,6 +311,9 @@
     @media (max-width: 768px) {
       nav { padding: 16px 20px; }
       .nav-links { display: none; }
+      .orb-1 { width: min(360px, 92vw); height: min(360px, 92vw); }
+      .orb-2 { width: min(260px, 70vw); height: min(260px, 70vw); right: 0; }
+      .orb-3 { width: min(220px, 60vw); height: min(220px, 60vw); left: 0; }
       .feature-item { grid-template-columns: 1fr; }
       .feature-visual { display: none; }
       .feature-item:nth-child(even) .feature-visual { order: 0; }
@@ -329,9 +333,8 @@
   <div class="nav-links">
     <a href="#problem">Problem</a>
     <a href="#features">Features</a>
-    <a href="#pricing">Pricing</a>
   </div>
-  <button class="nav-cta" onclick="document.getElementById('survey').scrollIntoView({behavior:'smooth'})">Complete Survey →</button>
+  <button class="nav-cta" type="button" onclick="document.getElementById('survey').scrollIntoView({behavior:'smooth'})">Complete Survey →</button>
 </nav>
 
 <!-- HERO -->
@@ -347,8 +350,8 @@
   </p>
 
   <div class="hero-actions">
-    <button class="btn-primary" onclick="document.getElementById('survey').scrollIntoView({behavior:'smooth'})">Complete Survey</button>
-    <button class="btn-ghost" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">See Features ↓</button>
+    <button class="btn-primary" type="button" onclick="document.getElementById('survey').scrollIntoView({behavior:'smooth'})">Complete Survey</button>
+    <button class="btn-ghost" type="button" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">See Features ↓</button>
   </div>
 
   <div class="models-strip">
@@ -563,16 +566,6 @@
   </div>
 </section>
 
-<!-- PRICING -->
-<section id="pricing">
-  <div class="fade-in">
-    <div class="section-tag" style="text-align:center">Pricing</div>
-    <h2 style="text-align:center">Simple, India-first pricing.</h2>
-    <p style="color:var(--muted);max-width:400px;margin:12px auto 0;text-align:center">Designed for students, developers, and creators - not Silicon Valley budgets.</p>
-  </div>
-
-</section>
-
 <!-- SURVEY -->
 <section id="survey">
   <div class="fade-in" style="text-align:center">
@@ -588,11 +581,11 @@
     <div class="form-row">
       <div class="form-group">
         <label for="name"><span class="q-num">1</span> Your Name</label>
-        <input type="text" id="name" placeholder="John Doe" />
+        <input type="text" id="name" name="name" placeholder="John Doe" autocomplete="name" required />
       </div>
       <div class="form-group">
         <label for="email"><span class="q-num">2</span> Email Address</label>
-        <input type="email" id="email" placeholder="you@email.com" />
+        <input type="email" id="email" name="email" placeholder="you@email.com" autocomplete="email" required />
       </div>
     </div>
 
@@ -609,7 +602,7 @@
 
     <div class="form-group">
       <label for="city"><span class="q-num">4</span> City / State</label>
-      <input type="text" id="city" placeholder="Mumbai, Maharashtra" />
+      <input type="text" id="city" name="city" placeholder="Mumbai, Maharashtra" autocomplete="address-level2" required />
     </div>
 
     <div class="form-divider"></div>
@@ -632,7 +625,7 @@
 
     <div class="form-group">
       <label><span class="q-num">6</span> How often do you switch between different AI models?</label>
-      <select id="switchFreq">
+      <select id="switchFreq" name="switch_frequency" required>
         <option value="">Select...</option>
         <option>Multiple times per day</option>
         <option>Once a day</option>
@@ -644,7 +637,7 @@
 
     <div class="form-group">
       <label><span class="q-num">7</span> How much do you spend on AI subscriptions monthly? (₹)</label>
-      <select id="spend">
+      <select id="spend" name="monthly_spend" required>
         <option value="">Select...</option>
         <option>₹0 — Free tools only</option>
         <option>₹1 – ₹500</option>
@@ -672,7 +665,7 @@
 
     <div class="form-group">
       <label for="painStory"><span class="q-num">9</span> Tell us about a time AI tools let you down. What happened?</label>
-      <textarea id="painStory" placeholder="E.g. I was working on my thesis and switched from ChatGPT to Claude — had to re-explain everything from scratch..."></textarea>
+      <textarea id="painStory" name="pain_story" placeholder="E.g. I was working on my thesis and switched from ChatGPT to Claude — had to re-explain everything from scratch..."></textarea>
     </div>
 
     <div class="form-divider"></div>
@@ -682,7 +675,7 @@
       <label><span class="q-num">10</span> How excited are you about Unified Memory (context that travels between AI models)?</label>
       <div class="range-wrap">
         <span style="color:var(--muted);font-size:13px">Meh</span>
-        <input type="range" id="memoryExcitement" min="1" max="10" value="5" oninput="document.getElementById('memVal').textContent=this.value" />
+        <input type="range" id="memoryExcitement" name="memory_excitement" min="1" max="10" value="5" oninput="document.getElementById('memVal').textContent=this.value" />
         <span class="range-val" id="memVal">5</span>
         <span style="color:var(--muted);font-size:13px">🔥 Must-have</span>
       </div>
@@ -732,7 +725,7 @@
       <label><span class="q-num">14</span> How likely are you to pay for Weavim if it saves you 60+ min per day?</label>
       <div class="range-wrap">
         <span style="color:var(--muted);font-size:13px">Not at all</span>
-        <input type="range" id="payLikelihood" min="1" max="10" value="5" oninput="document.getElementById('payVal').textContent=this.value" />
+        <input type="range" id="payLikelihood" name="pay_likelihood" min="1" max="10" value="5" oninput="document.getElementById('payVal').textContent=this.value" />
         <span class="range-val" id="payVal">5</span>
         <span style="color:var(--muted);font-size:13px">Definitely</span>
       </div>
@@ -743,18 +736,19 @@
 
     <div class="form-group">
       <label for="missing"><span class="q-num">15</span> What feature is missing from every AI tool you've tried?</label>
-      <textarea id="missing" placeholder="Something you've always wished existed..."></textarea>
+      <textarea id="missing" name="missing_feature" placeholder="Something you've always wished existed..." required></textarea>
     </div>
 
     <div class="form-group">
       <label for="concern"><span class="q-num">16</span> What's your biggest concern about Weavim?</label>
-      <textarea id="concern" placeholder="Privacy, complexity, pricing, something else?"></textarea>
+      <textarea id="concern" name="concern" placeholder="Privacy, complexity, pricing, something else?"></textarea>
     </div>
 
-    <button class="submit-btn" id="submitBtn" onclick="submitForm()">
+    <button class="submit-btn" id="submitBtn" type="button" onclick="submitForm()">
       🚀 Complete the Survey
     </button>
 
+    <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
     <p style="text-align:center;color:var(--muted);font-size:12px;margin-top:16px">No spam. No ads. Just honest updates from the founder.</p>
   </div>
 
@@ -785,23 +779,68 @@
   document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
   function showError(element, message) {
+    const errorContainer = element.classList.contains('form-group') ? element : element.parentElement;
     element.classList.add('input-error');
+    element.setAttribute('aria-invalid', 'true');
 
-    let error = element.parentElement.querySelector('.error-text');
+    let error = errorContainer.querySelector('.error-text');
     if (!error) {
       error = document.createElement('div');
       error.className = 'error-text';
-      element.parentElement.appendChild(error);
+      error.id = `error-${Date.now()}`;
+      errorContainer.appendChild(error);
     }
     error.textContent = message;
+    element.setAttribute('aria-describedby', error.id);
+    setStatus(message, true);
 
     element.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 
   function clearErrors() {
-    document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
+    document.querySelectorAll('.input-error').forEach(el => {
+      el.classList.remove('input-error');
+      el.removeAttribute('aria-invalid');
+      el.removeAttribute('aria-describedby');
+    });
     document.querySelectorAll('.error-text').forEach(el => el.remove());
+    setStatus('');
   }
+
+  function setStatus(message, isError = false) {
+    const status = document.getElementById('formStatus');
+    if (!status) return;
+    status.textContent = message;
+    status.style.color = isError ? '#f55a8a' : 'var(--muted)';
+  }
+
+  function syncToolChoices(changedInput) {
+    const noneInput = document.querySelector('input[name="tools"][value="none"]');
+    const toolInputs = [...document.querySelectorAll('input[name="tools"]:not([value="none"])')];
+    if (!noneInput) return;
+
+    if (changedInput === noneInput && noneInput.checked) {
+      toolInputs.forEach(input => { input.checked = false; });
+    } else if (changedInput !== noneInput && changedInput.checked) {
+      noneInput.checked = false;
+    }
+  }
+
+  function updatePainLimit() {
+    const painInputs = [...document.querySelectorAll('input[name="pains"]')];
+    const selectedCount = painInputs.filter(input => input.checked).length;
+    painInputs.forEach(input => {
+      input.disabled = selectedCount >= 3 && !input.checked;
+    });
+  }
+
+  document.querySelectorAll('input[name="tools"]').forEach(input => {
+    input.addEventListener('change', () => syncToolChoices(input));
+  });
+
+  document.querySelectorAll('input[name="pains"]').forEach(input => {
+    input.addEventListener('change', updatePainLimit);
+  });
 
   // ── FORM SUBMISSION ──
   async function submitForm() {
@@ -822,7 +861,7 @@
       showError(document.getElementById('email'), 'Email is required');
       return;
     }
-    if (!email.includes('@') || !email.includes('.')) {
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       showError(document.getElementById('email'), 'Enter a valid email');
       return;
     }
@@ -862,8 +901,13 @@
     }
 
     // Q8 - Pain points
-    if (document.querySelectorAll('input[name="pains"]:checked').length === 0) {
+    const selectedPains = document.querySelectorAll('input[name="pains"]:checked');
+    if (selectedPains.length === 0) {
       showError(document.querySelector('input[name="pains"]').closest('.form-group'), 'Select at least one pain point');
+      return;
+    }
+    if (selectedPains.length > 3) {
+      showError(document.querySelector('input[name="pains"]').closest('.form-group'), 'Choose up to 3 pain points');
       return;
     }
 
@@ -881,7 +925,7 @@
 
     // Q13 - Pricing
     if (!document.querySelector('input[name="pricing"]:checked')) {
-      showError(document.querySelector('.radio-group:last-of-type'), 'Please select one option');
+      showError(document.querySelector('input[name="pricing"]').closest('.form-group'), 'Please select one option');
       return;
     }
 
@@ -914,19 +958,28 @@
 
     btn.disabled = true;
     btn.textContent = 'Submitting...';
+    setStatus('Submitting your response...');
 
     try {
-      await fetch(SCRIPT_URL, {
+      const response = await fetch(SCRIPT_URL, {
         method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify(formData)
       });
+      if (!response.ok) throw new Error(`Submission failed with ${response.status}`);
+
+      const responseText = await response.text();
+      if (responseText.trim().startsWith('{')) {
+        const result = JSON.parse(responseText);
+        if (result.success === false || result.ok === false) {
+          throw new Error(result.message || 'The submission was not accepted');
+        }
+      }
       showSuccess();
     } catch (err) {
-      alert('Something went wrong. Please try again.');
+      setStatus('We could not confirm the survey was saved. Please try again.', true);
       btn.disabled = false;
-      btn.textContent = '🚀 Complete the Survey';
+      btn.textContent = 'Complete the Survey';
     }
   }
 
