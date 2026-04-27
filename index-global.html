@@ -601,8 +601,8 @@
     </div>
 
     <div class="form-group">
-      <label for="city"><span class="q-num">4</span> City / State</label>
-      <input type="text" id="city" name="city" placeholder="New York City, USA" autocomplete="address-level2" required />
+      <label for="city"><span class="q-num">4</span> City / State (Current Residence)</label>
+      <input type="text" id="city" name="city" placeholder="New York, USA" autocomplete="address-level2" required />
     </div>
 
     <div class="form-divider"></div>
@@ -640,10 +640,10 @@
       <select id="spend" name="monthly_spend" required>
         <option value="">Select...</option>
         <option>$0 — Free tools only</option>
-        <option>$1 – $10</option>
-        <option>$10 – $25</option>
-        <option>$25 – $60</option>
-        <option>$60+</option>
+        <option>$1 – $500</option>
+        <option>$500 – $1,500</option>
+        <option>$1,500 – $4,000</option>
+        <option>$4,000+</option>
       </select>
     </div>
 
@@ -768,7 +768,7 @@
 
 <script>
   // ── PASTE YOUR GOOGLE APPS SCRIPT URL HERE ──
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxXZeQWnfjtrar8XPKAXk9sRXZtIh44HvBGkVJTIW5wjYHck48Vl2JKHaNIMs6pG5K4Yw/exec';
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzk2ZxXuFYTSPkfI8_aEE33DE55NFUs5aNg6TVy2hR5QhfdTTyzYq7qPq-fCNkT_hF_qw/exec';
 
   // ── FADE-IN ON SCROLL ──
   const observer = new IntersectionObserver((entries) => {
@@ -961,19 +961,23 @@
     setStatus('Submitting your response...');
 
     try {
-      await fetch(SCRIPT_URL, {
+      const response = await fetch(SCRIPT_URL, {
         method: 'POST',
-        mode: 'no-cors',
-        body: new URLSearchParams(formData)
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(formData)
       });
+      if (!response.ok) throw new Error(`Submission failed with ${response.status}`);
 
-      // IMPORTANT: assume success
+      const responseText = await response.text();
+      if (responseText.trim().startsWith('{')) {
+        const result = JSON.parse(responseText);
+        if (result.success === false || result.ok === false) {
+          throw new Error(result.message || 'The submission was not accepted');
+        }
+      }
       showSuccess();
-
     } catch (err) {
-      console.error(err);
-      setStatus('Submission failed. Please try again.', true);
-
+      setStatus('We could not confirm the survey was saved. Please try again.', true);
       btn.disabled = false;
       btn.textContent = 'Complete the Survey';
     }
